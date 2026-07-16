@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Charger — EV Charging Cable Alert System | Troy Pappas</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <canvas id="particles"></canvas>
+
+  <!-- Navigation -->
+  <nav id="navbar">
+    <div class="nav-brand">
+      <a href="index.html" style="color:inherit; text-decoration:none;"><span class="nav-bracket">[</span>TP<span class="nav-bracket">]</span></a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="detail-back-row">
+    <a href="index.html#projects" class="detail-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span>Back to Projects</span>
+    </a>
+  </div>
+
+  <!-- Hero -->
+  <header class="detail-hero fade-in">
+    <span class="detail-tag">// PROJECT 02 — CASE STUDY</span>
+    <h1>Charger: EV Charging Cable Alert System</h1>
+    <p class="detail-tagline">A Raspberry Pi Zero 2W dashboard companion that watches my car's charging indicator light with a camera and alerts me before I forget to plug in.</p>
+    <div class="detail-meta">
+      <span class="project-status in-progress">
+        <span class="status-dot pulse"></span> In Progress — Design &amp; Architecture Phase
+      </span>
+      <div class="project-tags">
+        <span class="tag">Raspberry Pi Zero 2W</span>
+        <span class="tag">Python + OpenCV</span>
+        <span class="tag">Computer Vision</span>
+        <span class="tag">Embedded Hardware</span>
+        <span class="tag">Portfolio Build</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 01 Overview -->
+  <section class="detail-section fade-in">
+    <div class="detail-section-head">
+      <span class="detail-num">01</span>
+      <h2>Overview</h2>
+    </div>
+    <p class="detail-lead">The problem is small but annoying: it's easy to walk away from an EV without actually getting the cable seated. Charger solves it with a tiny, always-on watcher.</p>
+    <p class="detail-lead">A USB camera mounted near the dashboard stays pointed at the car's charging status light. A Raspberry Pi Zero 2W samples that light every second or so using OpenCV, checking whether it's on or off. If the light indicates the cable has disconnected — or was never connected — the system sounds a GPIO-driven buzzer and fires a push notification to my phone, before I've walked away from the car.</p>
+    <p class="detail-lead">It's a self-contained unit: camera, compute, and power all live in one 3D-printed enclosure that sits on the dash, held down with suction cups and powered by a battery bank charged from the car's USB port. There's no screen and no speaker — just a light sensor, a buzzer, and a phone notification, kept as simple as the problem allows.</p>
+  </section>
+
+  <!-- 02 Goals -->
+  <section class="detail-section fade-in">
+    <div class="detail-section-head">
+      <span class="detail-num">02</span>
+      <h2>Goals</h2>
+    </div>
+    <div class="goals-grid">
+      <div class="goal-card">
+        <div class="goal-icon">🔌</div>
+        <h4>Functional in-car alerting</h4>
+        <p>Catch a disconnected or never-connected charging cable before I walk away — reliably, in real driveway lighting conditions.</p>
+      </div>
+      <div class="goal-card">
+        <div class="goal-icon">🧠</div>
+        <h4>Minimal, self-contained hardware</h4>
+        <p>No screen, no speaker, no extra failure points — just a camera, a buzzer, and a push notification, running off one small enclosure.</p>
+      </div>
+      <div class="goal-card">
+        <div class="goal-icon">🧰</div>
+        <h4>Portfolio-worthy build</h4>
+        <p>A complete demonstration of embedded hardware, computer vision, and iterative mechanical design — from enclosure to code.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 Hardware -->
+  <section class="detail-section fade-in">
+    <div class="detail-section-head">
+      <span class="detail-num">03</span>
+      <h2>Hardware</h2>
+    </div>
+    <p class="detail-lead">Everything fits in a compact, custom enclosure sized directly around the camera and Pi Zero 2W footprint.</p>
+    <div class="hw-table-wrap">
+      <table class="hw-table">
+        <thead>
+          <tr><th>Component</th><th>Role</th><th>Spec</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Raspberry Pi Zero 2 W</td><td>Main compute — runs the detection loop and alert logic</td><td>Quad-core ARM, 512MB RAM</td></tr>
+          <tr><td>Logitech USB webcam</td><td>Watches the dashboard's charging indicator light</td><td>Fixed focus, mounted separately from the Pi</td></tr>
+          <tr><td>Piezo buzzer</td><td>Audible connect / disconnect alert</td><td>GPIO-driven (BCM pin 17)</td></tr>
+          <tr><td>Portable battery bank</td><td>Power source with pass-through charging</td><td>Charged from the car's USB port</td></tr>
+          <tr><td>Custom 3D-printed enclosure</td><td>Houses camera + Pi in a low-profile case</td><td>Multiple iterations, PLA</td></tr>
+          <tr><td>Suction-cup mount</td><td>Attaches the unit to the dashboard</td><td>Water + Vaseline seal for grip on textured plastic</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 04 System Architecture -->
+  <section class="detail-section fade-in">
+    <div class="detail-section-head">
+      <span class="detail-num">04</span>
+      <h2>System Architecture</h2>
+    </div>
+    <p class="detail-lead">Signal flow from dashboard light to driver alert.</p>
+    <div class="arch-flow">
+      <div class="arch-node">
+        <div class="arch-icon">💡</div>
+        <div class="arch-label">Dashboard LED</div>
+        <div class="arch-sub">Car's charging indicator</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="arch-icon">📷</div>
+        <div class="arch-label">USB Camera</div>
+        <div class="arch-sub">Frame captured every ~1 sec</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="arch-icon">🧮</div>
+        <div class="arch-label">OpenCV</div>
+        <div class="arch-sub">Crop ROI, HSV threshold</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node arch-decision">
+        <div class="arch-icon">❓</div>
+        <div class="arch-label">State changed?</div>
+        <div class="arch-sub">No → sleep, poll again</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="arch-icon">🔔</div>
+        <div class="arch-label">Buzzer + Push Notification</div>
+        <div class="arch-sub">GPIO beep + ntfy.sh alert</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 How Detection Works -->
+  <section class="detail-section fade-in">
+    <div class="detail-section-head">
+      <span class="detail-num">05</span>
+      <h2>How Detection Works</h2>
+    </div>
+    <p class="detail-lead">The loop is deliberately simple — the Zero 2W has limited headroom, so the detection logic favors cheap, periodic checks over continuous video processing.</p>
+    <ol class="detail-steps">
+      <li>
+        <div class="detail-step-num">1</div>
+        <div class="detail-step-content">
+          <h4>Capture</h4>
+          <p>Grab a single frame from the USB camera roughly once a second.</p>
+        </div>
+      </li>
+      <li>
+        <div class="detail-step-num">2</div>
+        <div class="detail-step-content">
+          <h4>Crop to region of interest</h4>
+          <p>Isolate a small, calibrated pixel window covering the dashboard's charging indicator — ignore the rest of the frame entirely.</p>
+        </div>
+      </li>
+      <li>
+        <div class="detail-step-num">3</div>
+        <div class="detail-step-content">
+          <h4>Threshold in HSV</h4>
+          <p>Convert the crop to HSV color space and count pixels within a tuned red-hue range. HSV holds up far better than raw RGB against changing sunlight and dashboard glare, since hue stays comparatively stable even when brightness swings.</p>
+        </div>
+      </li>
+      <li>
+        <div class="detail-step-num">4</div>
+        <div class="detail-step-content">
+          <h4>Decide connected vs. disconnected</h4>
+          <p>Compare the red-pixel count against a calibrated threshold to flip the connection state.</p>
+        </div>
+      </li>
+      <li>
+        <div class="detail-step-num">5</div>
+        <div class="detail-step-content">
+          <h4>Alert on change</h4>
+          <p>On a confirmed state change, fire a push notification through ntfy.sh and drive the buzzer — two beeps for "connected," one for "disconnected" — then keep issuing a periodic reminder beep for as long as the cable stays connected.</p>
+        </div>
+      </li>
+      <li>
+        <div class="detail-step-num">6</div>
+        <div class="detail-step-content">
+          <h4>Sleep</h4>
+          <p>Wait roughly a second before the next poll — there's no need to check faster than the light itself changes.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- 06 Detection Loop Sketch -->
+  <section class="detail-section fade-in">
+    <div class="detail-section-head">
+      <span class="detail-num">06</span>
+      <h2>Next Iteration — Debounce Refinement</h2>
+    </div>
+    <p class="detail-lead">The live script (above) already works, but it re-evaluates on every single poll, which makes it sensitive to a stray glare frame or a blinking indicator. The next revision I'm planning adds a confirm-streak: the "off" reading has to persist across several consecutive polls before it triggers an alert. Sketch below — not yet merged into the live script.</p>
+    <div class="code-block">
+      <div class="code-block-label">detector_v2.py — planned debounce loop (sketch)</div>
+      <pre><code>ROI = (140, 95, 160, 115)  # x1, y1, x2, y2 — calibrated once during setup
+BRIGHTNESS_THRESHOLD = 80
+POLL_INTERVAL_SEC = 4
+CONFIRM_COUNT = 3
+
+off_streak = 0
+
+while True:
+    ok, frame = cap.read()
+    if not ok:
+        time.sleep(POLL_INTERVAL_SEC)
+        continue
+
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    x1, y1, x2, y2 = ROI
+    region = gray[y1:y2, x1:x2]
+    brightness = region.mean()
+
+    if brightness &lt; BRIGHTNESS_THRESHOLD:
+        off_streak += 1
+    else:
+        off_streak = 0
+
+    if off_streak &gt;= CONFIRM_COUNT:
+        notify("Charging cable is not connected.")
+        beep(1)
+        off_streak = 0  # avoid re-triggering every loop
+
+    time.sleep(POLL_INTERVAL_SEC)</code></pre>
+    </div>
+  </section>
+
+  <!-- 07 Build & Enclosure -->
+  <section class="detail-section fade-in">
+    <div class="detail-section-head">
+      <span class="detail-num">07</span>
+      <h2>Alerts &amp; Enclosure</h2>
+    </div>
+    <div class="goals-grid">
+      <div class="goal-card">
+        <div class="goal-icon">🔔</div>
+        <h4>Alerts</h4>
+        <p>A GPIO-driven piezo buzzer sounds two beeps on connect, one on disconnect, plus a periodic reminder beep while the cable stays connected. A push notification fires the instant the state changes — no screen, no local UI, status just lives on my phone.</p>
+      </div>
+      <div class="goal-card">
+        <div class="goal-icon">📦</div>
+        <h4>Enclosure</h4>
+        <p>Multiple 3D-printed iterations to fit the camera and Pi Zero 2W without stacking them. The final shell houses both side-by-side in a flat, low-profile case with a screwed-on lid, mounted to the dash on suction-cup feet.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 Design Challenges -->
+  <section class="detail-section fade-in">
+    <div class="detail-section-head">
+      <span class="detail-num">08</span>
+      <h2>Design Challenges</h2>
+    </div>
+    <div class="challenge-grid">
+      <div class="challenge-card">
+        <h4>Lighting variability</h4>
+        <p>Sunlight, headlight glare, and time-of-day changes affect how red pixels read in-frame. Calibration — and eventually the debounce logic above — is needed to avoid false alarms, not just a fixed brightness threshold.</p>
+      </div>
+      <div class="challenge-card">
+        <h4>Camera-to-enclosure fit</h4>
+        <p>The USB camera turned out to be physically larger than the Pi Zero 2W it was supposed to sit on top of, which broke the original stacked-enclosure plan and forced a full redesign around a side-by-side layout.</p>
+      </div>
+      <div class="challenge-card">
+        <h4>Power system safety</h4>
+        <p>A battery "HAT" seemed like the obvious power solution until I researched lithium battery behavior under heat — a car dashboard in direct sun ruled it out entirely, and the design moved to an external battery bank kept in a shaded spot.</p>
+      </div>
+      <div class="challenge-card">
+        <h4>Compute headroom on the Zero 2W</h4>
+        <p>512MB of RAM and a modest quad-core chip mean continuous video processing isn't realistic — the periodic polling approach exists specifically to stay within budget.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 Roadmap -->
+  <section class="detail-section fade-in">
+    <div class="detail-section-head">
+      <span class="detail-num">09</span>
+      <h2>Roadmap</h2>
+    </div>
+    <div class="roadmap-list">
+      <div class="roadmap-item">
+        <div class="roadmap-item-text">
+          <h4>Concept, hardware selection &amp; architecture</h4>
+          <p>Component list finalized, system design and detection flow mapped out.</p>
+        </div>
+        <span class="roadmap-pill done">Done</span>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-item-text">
+          <h4>V1 detection &amp; alert pipeline</h4>
+          <p>Python + OpenCV detection loop, GPIO buzzer, and ntfy.sh push notifications — built and running.</p>
+        </div>
+        <span class="roadmap-pill done">Done</span>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-item-text">
+          <h4>Enclosure design &amp; fabrication</h4>
+          <p>Six-plus 3D-printed iterations, culminating in the final suction-mounted assembly shown below.</p>
+        </div>
+        <span class="roadmap-pill done">Done</span>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-item-text">
+          <h4>Debounce / confirm-streak refinement</h4>
+          <p>Reduce false triggers from glare or a blinking indicator by requiring a persistent state change before alerting.</p>
+        </div>
+        <span class="roadmap-pill next">Next</span>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-item-text">
+          <h4>In-car calibration &amp; field testing</h4>
+          <p>Real-world lighting tests across different times of day; tune thresholds and check false-positive/negative rate.</p>
+        </div>
+        <span class="roadmap-pill later">Later</span>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-item-text">
+          <h4>Long-term reliability pass</h4>
+          <p>Battery draw over time, weatherproofing, and mount durability under repeated use.</p>
+        </div>
+        <span class="roadmap-pill later">Later</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 Build Gallery -->
+  <section class="detail-section fade-in">
+    <div class="detail-section-head">
+      <span class="detail-num">10</span>
+      <h2>Build Gallery — Enclosure Iterations</h2>
+    </div>
+    <p class="detail-lead">Every enclosure revision, in order. Each iteration builds on what the last one got wrong — click any photo to zoom in.</p>
+
+    <div class="gallery-timeline">
+
+      <div class="gallery-group">
+        <div class="gallery-group-head">
+          <span class="gallery-group-num">Iter. 01</span>
+          <h4>First shell — sized for the Pi alone</h4>
+        </div>
+        <div class="gallery-images">
+          <div class="gallery-thumb"><img src="images/charger/1.jpg" alt="First 3D-printed enclosure shell, front angle" loading="lazy" /></div>
+          <div class="gallery-thumb"><img src="images/charger/2.jpg" alt="First 3D-printed enclosure shell, side angle" loading="lazy" /></div>
+        </div>
+        <p class="gallery-caption">The very first printed shell, sized around the Raspberry Pi Zero 2W alone — before I'd found out the camera wasn't going to fit above it the way I'd planned. Two small cutouts test port alignment for power and data.</p>
+      </div>
+
+      <div class="gallery-group">
+        <div class="gallery-group-head">
+          <span class="gallery-group-num">Iter. 02</span>
+          <h4>Port-alignment pass</h4>
+        </div>
+        <div class="gallery-images">
+          <div class="gallery-thumb"><img src="images/charger/3.jpg" alt="Second enclosure iteration, front view" loading="lazy" /></div>
+          <div class="gallery-thumb"><img src="images/charger/3-1.jpg" alt="Second enclosure iteration, side view" loading="lazy" /></div>
+        </div>
+        <p class="gallery-caption">A slightly resized shell testing exact cutout placement, so the Pi's connectors line up without needing oversized holes that would weaken the print.</p>
+      </div>
+
+      <div class="gallery-group">
+        <div class="gallery-group-head">
+          <span class="gallery-group-num">Iter. 03</span>
+          <h4>Widening the window</h4>
+        </div>
+        <div class="gallery-images">
+          <div class="gallery-thumb"><img src="images/charger/4.jpg" alt="Third enclosure iteration with expanded cutout" loading="lazy" /></div>
+          <div class="gallery-thumb"><img src="images/charger/IMG_5681.jpg" alt="Third enclosure iteration, alternate angle" loading="lazy" /></div>
+        </div>
+        <p class="gallery-caption">Cutouts expanded to test a larger window alongside the original port hole — an early attempt to make room for the camera without a full redesign, before I accepted the stacked layout just wasn't going to work.</p>
+      </div>
+
+      <div class="gallery-group">
+        <div class="gallery-group-head">
+          <span class="gallery-group-num">Iter. 04</span>
+          <h4>Standalone camera housing</h4>
+        </div>
+        <div class="gallery-images">
+          <div class="gallery-thumb"><img src="images/charger/4-5.jpg" alt="Standalone camera enclosure, front angle" loading="lazy" /></div>
+          <div class="gallery-thumb"><img src="images/charger/4-5-1.jpg" alt="Standalone camera enclosure, rear angle" loading="lazy" /></div>
+        </div>
+        <p class="gallery-caption">A dedicated, taller housing built after realizing the camera was physically bigger than the Pi it was supposed to sit on top of. This is also around when I was testing a lithium battery "HAT" for power, before ruling it out on heat-safety grounds and switching to an external battery bank.</p>
+      </div>
+
+      <div class="gallery-group">
+        <div class="gallery-group-head">
+          <span class="gallery-group-num">Iter. 05</span>
+          <h4>Merged, vertical attempt</h4>
+        </div>
+        <div class="gallery-images">
+          <div class="gallery-thumb"><img src="images/charger/5.jpg" alt="Merged enclosure with round lens cutout, front view" loading="lazy" /></div>
+          <div class="gallery-thumb"><img src="images/charger/5-1.jpg" alt="Merged enclosure with round lens cutout, side view" loading="lazy" /></div>
+        </div>
+        <p class="gallery-caption">An attempt to merge the camera and Pi back into one enclosure, with a round lens cutout on the front face. It worked, but the vertical stack was bulkier than I wanted sitting on a dashboard.</p>
+      </div>
+
+      <div class="gallery-group">
+        <div class="gallery-group-head">
+          <span class="gallery-group-num">Iter. 06</span>
+          <h4>The winning geometry</h4>
+        </div>
+        <div class="gallery-images">
+          <div class="gallery-thumb"><img src="images/charger/6.jpg" alt="Final flat enclosure geometry, front view" loading="lazy" /></div>
+          <div class="gallery-thumb"><img src="images/charger/6-1.jpg" alt="Final flat enclosure geometry, side view" loading="lazy" /></div>
+        </div>
+        <p class="gallery-caption">A flat, low-profile shell with the camera up front behind an oval lens window and the Pi tucked in back — no more vertical stacking. This shape is what shipped.</p>
+      </div>
+
+      <div class="gallery-group">
+        <div class="gallery-group-head">
+          <span class="gallery-group-num">Final</span>
+          <h4>Assembled &amp; mounted</h4>
+        </div>
+        <div class="gallery-images">
+          <div class="gallery-thumb"><img src="images/charger/final.jpg" alt="Final assembled unit with suction-cup feet, front view" loading="lazy" /></div>
+          <div class="gallery-thumb"><img src="images/charger/final-1.jpg" alt="Final assembled unit, front angle" loading="lazy" /></div>
+          <div class="gallery-thumb"><img src="images/charger/final-3.jpg" alt="Final assembled unit, rear view" loading="lazy" /></div>
+          <div class="gallery-thumb"><img src="images/charger/final-4.jpg" alt="Final assembled unit, top view" loading="lazy" /></div>
+        </div>
+        <p class="gallery-caption">The finished, assembled unit — screwed-shut lid, camera and GPIO wiring routed internally, and four suction-cup feet mounted on threaded posts. This is the version that sits on the dash today, positioned directly in front of the car's charging indicator.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 11 Why This Project -->
+  <section class="detail-section fade-in" style="border-bottom:none;">
+    <div class="detail-section-head">
+      <span class="detail-num">11</span>
+      <h2>Why This Project</h2>
+    </div>
+    <p class="detail-lead">Charger is a compact demonstration of end-to-end embedded systems work: reading a real-world analog signal — a light — through a camera, processing it under tight compute constraints, and turning that into a clear, human-facing alert, all wrapped in a purpose-built physical enclosure that went through real, documented iteration. It touches computer vision, mechanical and enclosure design, hardware integration, and power engineering in one small package.</p>
+  </section>
+
+  <div class="detail-closing fade-in">
+    <a href="index.html#projects" class="btn-secondary">
+      <span>Back to Projects</span>
+    </a>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox-overlay" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close image">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <img src="" alt="" id="lightbox-img" />
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <span class="footer-brand"><span class="nav-bracket">[</span>TP<span class="nav-bracket">]</span></span>
+      <span class="footer-text">Troy Pappas · Sonoma County, CA · 2026</span>
+    </div>
+  </footer>
+
+  <script src="charger.js"></script>
+</body>
+</html>

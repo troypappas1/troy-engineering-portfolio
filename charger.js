@@ -1,11 +1,10 @@
 // ===========================
-// PARTICLE SYSTEM
+// PARTICLE SYSTEM (shared visual language with homepage)
 // ===========================
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 
 let particles = [];
-let connections = [];
 let mouseX = 0, mouseY = 0;
 
 function resize() {
@@ -37,7 +36,6 @@ class Particle {
     if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
     if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
 
-    // subtle mouse repulsion
     const dx = this.x - mouseX;
     const dy = this.y - mouseY;
     const dist = Math.sqrt(dx * dx + dy * dy);
@@ -91,55 +89,13 @@ initParticles();
 animateParticles();
 
 // ===========================
-// TYPEWRITER EFFECT
-// ===========================
-const phrases = [
-  'Aspiring Engineer',
-  'Basketball Player',
-  'Hardware Builder',
-  'Problem Solver',
-  'Sonoma County, CA',
-];
-
-let phraseIndex = 0;
-let charIndex = 0;
-let deleting = false;
-let pauseTimer = null;
-const typeEl = document.getElementById('typewriter');
-
-function typewrite() {
-  const current = phrases[phraseIndex];
-  if (!deleting) {
-    typeEl.textContent = current.slice(0, charIndex + 1);
-    charIndex++;
-    if (charIndex === current.length) {
-      deleting = true;
-      pauseTimer = setTimeout(typewrite, 2000);
-      return;
-    }
-  } else {
-    typeEl.textContent = current.slice(0, charIndex - 1);
-    charIndex--;
-    if (charIndex === 0) {
-      deleting = false;
-      phraseIndex = (phraseIndex + 1) % phrases.length;
-    }
-  }
-  setTimeout(typewrite, deleting ? 45 : 90);
-}
-
-setTimeout(typewrite, 1600);
-
-// ===========================
-// SCROLL ANIMATIONS
+// SCROLL FADE-IN
 // ===========================
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
+    if (entry.isIntersecting) entry.target.classList.add('visible');
   });
-}, { threshold: 0.12 });
+}, { threshold: 0.1 });
 
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
@@ -158,54 +114,37 @@ window.addEventListener('scroll', () => {
 });
 
 // ===========================
-// ACTIVE NAV LINK
+// PHOTO LIGHTBOX
 // ===========================
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-links a');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxClose = document.getElementById('lightbox-close');
 
-window.addEventListener('scroll', () => {
-  let current = '';
-  sections.forEach(section => {
-    if (window.scrollY >= section.offsetTop - 200) {
-      current = section.getAttribute('id');
-    }
+function openLightbox(src, alt) {
+  lightboxImg.src = src;
+  lightboxImg.alt = alt;
+  lightbox.classList.add('open');
+  lightbox.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('modal-open');
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  lightbox.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+}
+
+document.querySelectorAll('.gallery-thumb').forEach(thumb => {
+  thumb.addEventListener('click', () => {
+    const img = thumb.querySelector('img');
+    openLightbox(img.src, img.alt);
   });
-  navLinks.forEach(link => {
-    link.style.color = '';
-    if (link.getAttribute('href') === `#${current}`) {
-      link.style.color = 'var(--cyan)';
-    }
-  });
 });
 
-// ===========================
-// PROJECT LINK PLACEHOLDER
-// ===========================
-document.getElementById('plotter-link').addEventListener('click', function(e) {
-  const href = this.getAttribute('href');
-  if (!href || href === '#') {
-    e.preventDefault();
-    // Ripple effect on click
-    const card = document.getElementById('project-plotter');
-    card.style.boxShadow = '0 0 0 2px var(--cyan), 0 20px 60px rgba(0,245,255,0.2)';
-    setTimeout(() => {
-      card.style.boxShadow = '';
-    }, 600);
-  }
+lightboxClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) closeLightbox();
 });
-
-// ===========================
-// EV PROJECT CARD — WHOLE CARD NAVIGATES
-// ===========================
-document.getElementById('project-ev').addEventListener('click', function (e) {
-  if (e.target.closest('#ev-link')) return;
-  window.location.href = 'charger.html';
-});
-
-// ===========================
-// STAGGER PROJECT CARDS
-// ===========================
-document.querySelectorAll('.project-card').forEach((card, i) => {
-  card.style.setProperty('--i', i);
-  card.style.transitionDelay = `${i * 0.1}s`;
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
 });
