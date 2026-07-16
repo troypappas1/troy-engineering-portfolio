@@ -348,96 +348,138 @@ while True:
       <span class="detail-num">10</span>
       <h2>Build Gallery — Enclosure Iterations</h2>
     </div>
-    <p class="detail-lead">Every enclosure revision, in order. Each iteration builds on what the last one got wrong — click any photo to zoom in.</p>
+    <p class="detail-lead">Seven build logs, low to high. Each one builds on what the last got wrong — click any photo to zoom in.</p>
 
-    <div class="gallery-timeline">
+    <div class="carousel" id="build-carousel">
+      <div class="carousel-hud">
+        <span class="carousel-hud-label">// BUILD LOG</span>
+        <span class="carousel-hud-index"><span id="carousel-current">01</span><span class="carousel-hud-slash">/</span><span id="carousel-total">07</span></span>
+      </div>
+      <div class="carousel-progress-track"><div class="carousel-progress-fill" id="carousel-progress-fill"></div></div>
 
-      <div class="gallery-group">
-        <div class="gallery-group-head">
-          <span class="gallery-group-num">Iter. 01</span>
-          <h4>First shell — sized for the Pi alone</h4>
+      <div class="carousel-stage">
+        <button class="carousel-arrow prev" id="carousel-prev" aria-label="Previous iteration">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+
+        <div class="carousel-viewport">
+
+          <div class="carousel-slide is-active" data-slide="0">
+            <div class="carousel-media">
+              <div class="carousel-media-grid count-2">
+                <div class="gallery-thumb"><img src="images/charger/1.jpg" alt="First enclosure shell, front angle" loading="lazy" /></div>
+                <div class="gallery-thumb"><img src="images/charger/2.jpg" alt="First enclosure shell, side angle" loading="lazy" /></div>
+              </div>
+            </div>
+            <div class="carousel-info">
+              <span class="gallery-group-num">Iter. 01</span>
+              <h4>Testing the Pi's footprint</h4>
+              <p class="gallery-caption">This was how I tested the dimensions for the Pi to sit inside a shell — just a basic fit check. It didn't work: wrong footprint, no room planned for the camera at all.</p>
+            </div>
+          </div>
+
+          <div class="carousel-slide" data-slide="1">
+            <div class="carousel-media">
+              <div class="carousel-media-grid count-2">
+                <div class="gallery-thumb"><img src="images/charger/3.jpg" alt="Second enclosure iteration, front view" loading="lazy" /></div>
+                <div class="gallery-thumb"><img src="images/charger/3-1.jpg" alt="Second enclosure iteration, side view" loading="lazy" /></div>
+              </div>
+            </div>
+            <div class="carousel-info">
+              <span class="gallery-group-num">Iter. 02</span>
+              <h4>Resized, a bit taller</h4>
+              <p class="gallery-caption">I resized everything again and made the shell a bit taller, to see if the camera would fit this time.</p>
+            </div>
+          </div>
+
+          <div class="carousel-slide" data-slide="2">
+            <div class="carousel-media">
+              <div class="carousel-media-grid count-2">
+                <div class="gallery-thumb"><img src="images/charger/4.jpg" alt="Third enclosure iteration with HAT charging port cutout" loading="lazy" /></div>
+                <div class="gallery-thumb"><img src="images/charger/IMG_5681.jpg" alt="Third enclosure iteration, alternate angle" loading="lazy" /></div>
+              </div>
+            </div>
+            <div class="carousel-info">
+              <span class="gallery-group-num">Iter. 03</span>
+              <h4>The battery HAT experiment</h4>
+              <p class="gallery-caption">Experimenting with sizing for a Raspberry Pi power HAT I was considering — this version includes a cutout for its charging port. Had to move on: a lithium battery HAT sitting on a car dashboard would get way too hot.</p>
+            </div>
+          </div>
+
+          <div class="carousel-slide" data-slide="3">
+            <div class="carousel-media">
+              <div class="carousel-media-grid count-2">
+                <div class="gallery-thumb"><img src="images/charger/4-5.jpg" alt="Standalone camera mold enclosure, front angle" loading="lazy" /></div>
+                <div class="gallery-thumb"><img src="images/charger/4-5-1.jpg" alt="Standalone camera mold enclosure, rear angle" loading="lazy" /></div>
+              </div>
+            </div>
+            <div class="carousel-info">
+              <span class="gallery-group-num">Iter. 04</span>
+              <h4>Camera in its own mold</h4>
+              <p class="gallery-caption">A new design that positions the camera in a molded cutout of its own. Turned out to sit way too high for the charging light — the geometry just didn't line up with where I needed to look.</p>
+            </div>
+          </div>
+
+          <div class="carousel-slide" data-slide="4">
+            <div class="carousel-media">
+              <div class="carousel-media-grid count-2">
+                <div class="gallery-thumb"><img src="images/charger/5.jpg" alt="Vertical enclosure with round lens cutout, front view" loading="lazy" /></div>
+                <div class="gallery-thumb"><img src="images/charger/5-1.jpg" alt="Vertical enclosure with round lens cutout, side view" loading="lazy" /></div>
+              </div>
+            </div>
+            <div class="carousel-info">
+              <span class="gallery-group-num">Iter. 05</span>
+              <h4>Cutout too small, too precise</h4>
+              <p class="gallery-caption">Another vertical attempt — but I ended up liking a bigger camera cutout instead. This round one was too small for the camera to fit in and needed to be almost perfectly precise, which pushed me toward a bigger opening next.</p>
+            </div>
+          </div>
+
+          <div class="carousel-slide" data-slide="5">
+            <div class="carousel-media">
+              <div class="carousel-media-grid count-2">
+                <div class="gallery-thumb"><img src="images/charger/6.jpg" alt="Flat rectangular enclosure, front view" loading="lazy" /></div>
+                <div class="gallery-thumb"><img src="images/charger/6-1.jpg" alt="Flat rectangular enclosure, side view" loading="lazy" /></div>
+              </div>
+            </div>
+            <div class="carousel-info">
+              <span class="gallery-group-num">Iter. 06</span>
+              <h4>The camera clicks in</h4>
+              <p class="gallery-caption">Ended up with a rectangular design and a camera cutout the camera actually clicks into. This design worked — but I still needed holes for the charging and data cords, a top for the case, and a way to mount the whole thing to the car.</p>
+            </div>
+          </div>
+
+          <div class="carousel-slide" data-slide="6">
+            <div class="carousel-media">
+              <div class="carousel-media-grid count-4">
+                <div class="gallery-thumb"><img src="images/charger/final.jpg" alt="Final assembled unit with suction-cup feet, front view" loading="lazy" /></div>
+                <div class="gallery-thumb"><img src="images/charger/final-1.jpg" alt="Final assembled unit, front angle" loading="lazy" /></div>
+                <div class="gallery-thumb"><img src="images/charger/final-3.jpg" alt="Final assembled unit, rear view" loading="lazy" /></div>
+                <div class="gallery-thumb"><img src="images/charger/final-4.jpg" alt="Final assembled unit, top view" loading="lazy" /></div>
+              </div>
+            </div>
+            <div class="carousel-info">
+              <span class="gallery-group-num">Iter. 07</span>
+              <h4>Suction cups &amp; a bolted lid</h4>
+              <p class="gallery-caption">Figured out suction cups to mount the design directly in front of the car's charging indicator. I used 3D-printed screw bosses along with machine screws to bolt on a top for the enclosure — fully assembled and ready to install.</p>
+            </div>
+          </div>
+
         </div>
-        <div class="gallery-images">
-          <div class="gallery-thumb"><img src="images/charger/1.jpg" alt="First 3D-printed enclosure shell, front angle" loading="lazy" /></div>
-          <div class="gallery-thumb"><img src="images/charger/2.jpg" alt="First 3D-printed enclosure shell, side angle" loading="lazy" /></div>
-        </div>
-        <p class="gallery-caption">The very first printed shell, sized around the Raspberry Pi Zero 2W alone — before I'd found out the camera wasn't going to fit above it the way I'd planned. Two small cutouts test port alignment for power and data.</p>
+
+        <button class="carousel-arrow next" id="carousel-next" aria-label="Next iteration">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
       </div>
 
-      <div class="gallery-group">
-        <div class="gallery-group-head">
-          <span class="gallery-group-num">Iter. 02</span>
-          <h4>Port-alignment pass</h4>
-        </div>
-        <div class="gallery-images">
-          <div class="gallery-thumb"><img src="images/charger/3.jpg" alt="Second enclosure iteration, front view" loading="lazy" /></div>
-          <div class="gallery-thumb"><img src="images/charger/3-1.jpg" alt="Second enclosure iteration, side view" loading="lazy" /></div>
-        </div>
-        <p class="gallery-caption">A slightly resized shell testing exact cutout placement, so the Pi's connectors line up without needing oversized holes that would weaken the print.</p>
+      <div class="carousel-tabs" id="carousel-tabs">
+        <button class="carousel-tab is-active" data-slide="0">01</button>
+        <button class="carousel-tab" data-slide="1">02</button>
+        <button class="carousel-tab" data-slide="2">03</button>
+        <button class="carousel-tab" data-slide="3">04</button>
+        <button class="carousel-tab" data-slide="4">05</button>
+        <button class="carousel-tab" data-slide="5">06</button>
+        <button class="carousel-tab" data-slide="6">07</button>
       </div>
-
-      <div class="gallery-group">
-        <div class="gallery-group-head">
-          <span class="gallery-group-num">Iter. 03</span>
-          <h4>Widening the window</h4>
-        </div>
-        <div class="gallery-images">
-          <div class="gallery-thumb"><img src="images/charger/4.jpg" alt="Third enclosure iteration with expanded cutout" loading="lazy" /></div>
-          <div class="gallery-thumb"><img src="images/charger/IMG_5681.jpg" alt="Third enclosure iteration, alternate angle" loading="lazy" /></div>
-        </div>
-        <p class="gallery-caption">Cutouts expanded to test a larger window alongside the original port hole — an early attempt to make room for the camera without a full redesign, before I accepted the stacked layout just wasn't going to work.</p>
-      </div>
-
-      <div class="gallery-group">
-        <div class="gallery-group-head">
-          <span class="gallery-group-num">Iter. 04</span>
-          <h4>Standalone camera housing</h4>
-        </div>
-        <div class="gallery-images">
-          <div class="gallery-thumb"><img src="images/charger/4-5.jpg" alt="Standalone camera enclosure, front angle" loading="lazy" /></div>
-          <div class="gallery-thumb"><img src="images/charger/4-5-1.jpg" alt="Standalone camera enclosure, rear angle" loading="lazy" /></div>
-        </div>
-        <p class="gallery-caption">A dedicated, taller housing built after realizing the camera was physically bigger than the Pi it was supposed to sit on top of. This is also around when I was testing a lithium battery "HAT" for power, before ruling it out on heat-safety grounds and switching to an external battery bank.</p>
-      </div>
-
-      <div class="gallery-group">
-        <div class="gallery-group-head">
-          <span class="gallery-group-num">Iter. 05</span>
-          <h4>Merged, vertical attempt</h4>
-        </div>
-        <div class="gallery-images">
-          <div class="gallery-thumb"><img src="images/charger/5.jpg" alt="Merged enclosure with round lens cutout, front view" loading="lazy" /></div>
-          <div class="gallery-thumb"><img src="images/charger/5-1.jpg" alt="Merged enclosure with round lens cutout, side view" loading="lazy" /></div>
-        </div>
-        <p class="gallery-caption">An attempt to merge the camera and Pi back into one enclosure, with a round lens cutout on the front face. It worked, but the vertical stack was bulkier than I wanted sitting on a dashboard.</p>
-      </div>
-
-      <div class="gallery-group">
-        <div class="gallery-group-head">
-          <span class="gallery-group-num">Iter. 06</span>
-          <h4>The winning geometry</h4>
-        </div>
-        <div class="gallery-images">
-          <div class="gallery-thumb"><img src="images/charger/6.jpg" alt="Final flat enclosure geometry, front view" loading="lazy" /></div>
-          <div class="gallery-thumb"><img src="images/charger/6-1.jpg" alt="Final flat enclosure geometry, side view" loading="lazy" /></div>
-        </div>
-        <p class="gallery-caption">A flat, low-profile shell with the camera up front behind an oval lens window and the Pi tucked in back — no more vertical stacking. This shape is what shipped.</p>
-      </div>
-
-      <div class="gallery-group">
-        <div class="gallery-group-head">
-          <span class="gallery-group-num">Final</span>
-          <h4>Assembled &amp; mounted</h4>
-        </div>
-        <div class="gallery-images">
-          <div class="gallery-thumb"><img src="images/charger/final.jpg" alt="Final assembled unit with suction-cup feet, front view" loading="lazy" /></div>
-          <div class="gallery-thumb"><img src="images/charger/final-1.jpg" alt="Final assembled unit, front angle" loading="lazy" /></div>
-          <div class="gallery-thumb"><img src="images/charger/final-3.jpg" alt="Final assembled unit, rear view" loading="lazy" /></div>
-          <div class="gallery-thumb"><img src="images/charger/final-4.jpg" alt="Final assembled unit, top view" loading="lazy" /></div>
-        </div>
-        <p class="gallery-caption">The finished, assembled unit — screwed-shut lid, camera and GPIO wiring routed internally, and four suction-cup feet mounted on threaded posts. This is the version that sits on the dash today, positioned directly in front of the car's charging indicator.</p>
-      </div>
-
     </div>
   </section>
 
@@ -448,6 +490,7 @@ while True:
       <h2>Why This Project</h2>
     </div>
     <p class="detail-lead">Charger is a compact demonstration of end-to-end embedded systems work: reading a real-world analog signal — a light — through a camera, processing it under tight compute constraints, and turning that into a clear, human-facing alert, all wrapped in a purpose-built physical enclosure that went through real, documented iteration. It touches computer vision, mechanical and enclosure design, hardware integration, and power engineering in one small package.</p>
+    <p class="detail-lead">A mechanical engineering course I recently took at the University of Michigan pushed me to combine two of my biggest interests — mechanics and computer science — into a single project, and to point that combination at a real problem I'd actually run into in my own life.</p>
   </section>
 
   <div class="detail-closing fade-in">
