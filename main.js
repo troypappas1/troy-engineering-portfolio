@@ -95,6 +95,7 @@ animateParticles();
 // ===========================
 const phrases = [
   'Aspiring Engineer',
+  'Accessible Tech Builder',
   'Basketball Player',
   'Hardware Builder',
   'Problem Solver',
@@ -200,6 +201,19 @@ document.getElementById('plotter-link').addEventListener('click', function(e) {
 document.getElementById('project-ev').addEventListener('click', function (e) {
   if (e.target.closest('#ev-link')) return;
   window.location.href = 'charger.html';
+});
+
+// ===========================
+// READ MORE TOGGLE
+// ===========================
+document.querySelectorAll('.read-more-btn').forEach(btn => {
+  const content = document.getElementById(btn.getAttribute('aria-controls'));
+  btn.addEventListener('click', () => {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    btn.classList.toggle('open');
+    content.classList.toggle('open');
+  });
 });
 
 // ===========================
