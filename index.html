@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Troy Pappas — Engineer & Athlete</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Particle Canvas Background -->
+  <canvas id="particles"></canvas>
+
+  <!-- Navigation -->
+  <nav id="navbar">
+    <div class="nav-brand">
+      <span class="nav-bracket">[</span>TP<span class="nav-bracket">]</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero">
+    <div class="hero-content">
+      <div class="hero-tag">// PORTFOLIO</div>
+      <h1 class="hero-name">
+        <span class="name-line">Troy</span>
+        <span class="name-line accent">Pappas</span>
+      </h1>
+      <div class="hero-subtitle">
+        <span class="typewriter" id="typewriter"></span>
+        <span class="cursor">|</span>
+      </div>
+      <p class="hero-location">
+        <span class="dot"></span> Sonoma County, California
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn-primary">View Projects</a>
+        <a href="#contact" class="btn-secondary">Get In Touch</a>
+      </div>
+    </div>
+    <div class="hero-graphic">
+      <div class="orbit-ring ring-1"></div>
+      <div class="orbit-ring ring-2"></div>
+      <div class="orbit-ring ring-3"></div>
+      <div class="center-node">
+        <div class="node-inner"></div>
+      </div>
+      <div class="orbit-dot dot-1"></div>
+      <div class="orbit-dot dot-2"></div>
+      <div class="orbit-dot dot-3"></div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2>About Me</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-text fade-in">
+        <p class="about-lead">I'm an aspiring <span class="highlight">engineer</span> with a passion for building things that solve real problems.</p>
+        <p>Based in Sonoma County, California, I bring both analytical precision and creative drive to every project I take on — whether that's programming, design, or the basketball court.</p>
+        <p>I'm passionate about the intersection of hardware and software, and I love turning ideas into tangible, working systems.</p>
+      </div>
+      <div class="about-stats fade-in">
+        <div class="stat-card">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-label">Engineering</div>
+          <div class="stat-desc">Hardware + Software systems</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏀</div>
+          <div class="stat-label">Basketball</div>
+          <div class="stat-desc">Competitive athlete</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📍</div>
+          <div class="stat-label">Location</div>
+          <div class="stat-desc">Sonoma County, CA</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🎓</div>
+          <div class="stat-label">Goals</div>
+          <div class="stat-desc">College Engineering Program</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2>Projects</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="projects-grid">
+
+      <!-- Project 1: Adaptive Pen Plotter -->
+      <div class="project-card fade-in" id="project-plotter">
+        <div class="project-status completed">
+          <span class="status-dot"></span> Completed
+        </div>
+        <div class="project-number">01</div>
+        <div class="project-icon">
+          <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="8" width="40" height="44" rx="3" stroke="currentColor" stroke-width="2"/>
+            <line x1="18" y1="20" x2="42" y2="20" stroke="currentColor" stroke-width="2"/>
+            <line x1="18" y1="28" x2="42" y2="28" stroke="currentColor" stroke-width="2"/>
+            <line x1="18" y1="36" x2="34" y2="36" stroke="currentColor" stroke-width="2"/>
+            <path d="M36 42 L44 34 L48 38 L40 46 L36 46 Z" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+        </div>
+        <h3 class="project-title">Adaptive Pen Plotter</h3>
+        <p class="project-desc">A custom-built pen plotter system with adaptive capabilities, translating digital designs into precise physical drawings through programmatic motion control.</p>
+        <div class="project-tags">
+          <span class="tag">Hardware</span>
+          <span class="tag">Motion Control</span>
+          <span class="tag">Engineering</span>
+        </div>
+        <a href="#" class="project-link" id="plotter-link">
+          <span>View Project</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <!-- Project 2: EV Charging Monitor -->
+      <div class="project-card fade-in" id="project-ev">
+        <div class="project-status in-progress">
+          <span class="status-dot pulse"></span> In Progress
+        </div>
+        <div class="project-number">02</div>
+        <div class="project-icon">
+          <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="12" y="8" width="36" height="44" rx="4" stroke="currentColor" stroke-width="2"/>
+            <rect x="20" y="4" width="20" height="8" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M32 22 L26 34 H31 L28 44 L38 30 H32 Z" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+        </div>
+        <h3 class="project-title">EV Charging Monitor</h3>
+        <p class="project-desc">A real-time monitoring system for electric vehicle charging infrastructure, tracking energy usage, charge cycles, and providing intelligent status reporting.</p>
+        <div class="project-tags">
+          <span class="tag">IoT</span>
+          <span class="tag">EV Technology</span>
+          <span class="tag">Monitoring</span>
+        </div>
+        <div class="project-progress">
+          <div class="progress-label">
+            <span>Development Progress</span>
+            <span>Active</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2>Contact</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-wrapper fade-in">
+      <p class="contact-lead">Interested in my work or want to connect? I'd love to hear from you.</p>
+      <div class="contact-links">
+        <a href="mailto:troy4pappas@gmail.com" class="contact-card">
+          <div class="contact-icon">✉</div>
+          <div>
+            <div class="contact-type">Email</div>
+            <div class="contact-value">troy4pappas@gmail.com</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <span class="footer-brand"><span class="nav-bracket">[</span>TP<span class="nav-bracket">]</span></span>
+      <span class="footer-text">Troy Pappas · Sonoma County, CA · 2026</span>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
